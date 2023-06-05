@@ -1,7 +1,7 @@
 from flask import Flask,render_template, request,url_for
 import psycopg2
 
-conn = psycopg2.connect(host="localhost",dbname="Restaurant",user="Restaurant",
+conn = psycopg2.connect(host="localhost",dbname="Restaurant",user="postgres",
                         password="babe123",post=5432)
 
 app = Flask(__name__)
