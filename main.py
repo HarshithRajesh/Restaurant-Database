@@ -4,14 +4,13 @@ import psycopg2
 conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
 
 cur = conn.cursor()
-create_table = """
-    CREATE TABLE IF NOT EXISTS user (
-    id SERIAL PRIMARY KEY,
+create_table = '''
+    CREATE TABLE IF NOT EXISTS user_info (
+    id int PRIMARY KEY,
     name VARCHAR(260),
     password VARCHAR(5000),
     email VARCHAR(300)
-);
-"""
+)   '''
 cur.execute(create_table)
 conn.commit()
 cur.close()
