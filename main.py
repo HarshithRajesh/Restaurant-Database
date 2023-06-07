@@ -1,21 +1,21 @@
 from flask import Flask,render_template, request,url_for
 import psycopg2
 
-# conn = psycopg2.connect(host="localhost",dbname="postgres",user="postgres",
-#                         password="babe123",post=5432)
+conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
 
-# cur = conn.cursor()
-
-# cur.execute("""CREATE TABLE IF NOT EXIST user(
-#     id INT PRIMARY KEY,
-#     name VARCHAR(260),
-#     password VARCHAR(5000),
-#     email VARCHAR(300)
-# );
-# """)
-# conn.commit()
-# cur.close()
-# conn.close()
+cur = conn.cursor()
+create_table = """
+    CREATE TABLE IF NOT EXISTS user (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(260),
+    password VARCHAR(5000),
+    email VARCHAR(300)
+);
+"""
+cur.execute(create_table)
+conn.commit()
+cur.close()
+conn.close()
 
 app = Flask(__name__)
 
