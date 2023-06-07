@@ -1,5 +1,6 @@
 from flask import Flask,render_template, request,url_for
 import psycopg2
+from werkzeug.security import generate_password_hash, check_password_hash
 
 conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
 
@@ -37,6 +38,17 @@ def register():
         username = request.form.get("user")
         password = request.form.get("pass")
         email = request.form.get("email")
+        password = generate_password_hash(password,method='pbkdf2:sha256',salt_length=8)
+
+        user_data = '''INSERT INTO user_info(name, password,email)
+VALUES (username, password, email);
+        '''
+        cur = conn.cursor()
+        cur.execute(user_data)
+        conn.commit()
+        cur.close()
+        conn.close()
+
 
     return username,password,email
         
