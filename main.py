@@ -29,30 +29,36 @@ def login():
    if request.method=="POST":
        username = request.form.get('user')
        password = request.form.get('pass')
+       conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
+       cur = conn.cursor()
+
+    
 
        return username,password
 
 @app.route("/register",methods=["GET","POST"])
 def register():
+    conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
+    cur = conn.cursor()
     if request.method=="POST":
         username = request.form.get("user")
         password = request.form.get("pass")
         email = request.form.get("email")
         password = generate_password_hash(password,method='pbkdf2:sha256',salt_length=8)
 
-        user_data = '''INSERT INTO user_info(name, password,email)
-VALUES (username, password, email);
-        '''
-        cur = conn.cursor()
-        cur.execute(user_data)
+        user_data = 'INSERT INTO user_info(id,name,password,email) VALUES (%s,%s,%s,%s);'
+        values = (2,username,password,email)
+        
+        cur.execute(user_data,values)
         conn.commit()
         cur.close()
         conn.close()
 
 
-    return username,password,email
-        
-
+    
+@app.route("/home",methods=["POST"])
+def home_page():
+    return render_template("index.html")
        
 
 if __name__ == "__main__":
