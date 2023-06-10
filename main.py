@@ -1,4 +1,4 @@
-from flask import Flask,render_template, request,url_for
+from flask import Flask,render_template, request,url_for,flash
 import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -7,10 +7,10 @@ conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123'
 cur = conn.cursor()
 create_table = '''
     CREATE TABLE IF NOT EXISTS user_info (
-    id int PRIMARY KEY,
-    name VARCHAR(260),
-    password VARCHAR(5000),
-    email VARCHAR(300)
+    ID SERIAL PRIMARY KEY,
+    NAME VARCHAR(260),
+    PASSWORD VARCHAR(5000),
+    EMAIL VARCHAR(300)
 )   '''
 cur.execute(create_table)
 conn.commit()
@@ -34,7 +34,7 @@ def login():
 
     
 
-       return username,password
+       return {'status':1}
 
 @app.route("/register",methods=["GET","POST"])
 def register():
@@ -43,16 +43,22 @@ def register():
     if request.method=="POST":
         username = request.form.get("user")
         password = request.form.get("pass")
+        repass = request.form.get("repass")
         email = request.form.get("email")
-        password = generate_password_hash(password,method='pbkdf2:sha256',salt_length=8)
 
-        user_data = 'INSERT INTO user_info(id,name,password,email) VALUES (%s,%s,%s,%s);'
-        values = (2,username,password,email)
-        
-        cur.execute(user_data,values)
-        conn.commit()
-        cur.close()
-        conn.close()
+        if (password==repass):
+            password = generate_password_hash(password,method='pbkdf2:sha256',salt_length=8)
+
+            user_data = 'INSERT INTO user_info(name,password,email) VALUES (%s,%s,%s);'
+            values = (username,password,email)
+            
+            cur.execute(user_data,values)
+            conn.commit()
+            cur.close()
+            conn.close()
+        else:
+            return {'status':0}
+
 
 
     
@@ -62,4 +68,4 @@ def home_page():
        
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) 
