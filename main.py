@@ -1,6 +1,7 @@
 from flask import Flask,render_template, request,url_for,flash
 import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
 
 conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
 COUNT = 3
@@ -74,27 +75,24 @@ def register():
 @app.route("/home",methods=["GET"])
 def home_page():
     return render_template("index.html")
-    # if request.method=="POST":
 
-    #     breakfast = request.form.get("breakfast")
-    #     lunch = request.form.ger("lunch")
-    #     snacks = request.form.get("snacks")
-    #     dinner = request.form.get("dinner")
-    #     ordered= []
-    #     if breakfast:
-    #         ordered.append("breakfast")
-    #     if lunch:
-    #         ordered.append("lunch")
-    #     if snacks:
-    #         ordered.append("snacks")
-    #     if dinner:
-    #         ordered.append("dinner")
-    #     else:
-    #         ordered.append("null")
-    
-    # return ordered
-        
-       
+@app.route("/book",methods=["POST"])
+def book():
+    if request.method=="POST":
+        breakfast = request.form.getlist("breakfast")
+        lunch = request.form.getlist("lunch")
+        snacks = request.form.getlist("snacks")
+        dinner = request.form.getlist("dinner")
+        ordered = []
+        if breakfast:
+            ordered.append('breakfast')
+        if lunch:
+            ordered.append('lunch')
+        if snacks:
+            ordered.append('snacks')
+        if dinner:
+            ordered.append('dinner')
+        return ordered
 
 if __name__ == "__main__":
     app.run(debug=True) 

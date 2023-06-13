@@ -7,7 +7,7 @@
     <title>Restaurant</title>
 </head>
 <body>
-    <form action="{{ url_for('home')}}" method="post">
+    <form action="{{ url_for('book')}}" method="post">
     <input type="checkbox" name="breakfast" id="breakfast">
     <label for="breakfast">Breakfast</label><br>
     <input type="checkbox" name="lunch" id="lunch">
@@ -16,6 +16,7 @@
     <label for="snacks">Snacks</label><br>
     <input type="checkbox" name="dinner" id="dinner">
     <label for="dinner">Dinner</label><br>
-</form>
+    <button type="submit"><a href="/book"></a>Submit</button>
+    </form>
 </body>
 </html>
