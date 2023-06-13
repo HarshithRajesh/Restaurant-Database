@@ -65,7 +65,7 @@ def register():
             conn.commit()
             cur.close()
             conn.close()
-            redire
+            
             return{'status':1}
         else:
             return {'status':0}
@@ -78,6 +78,8 @@ def home_page():
 
 @app.route("/book",methods=["POST"])
 def book():
+    conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
+    cur = conn.cursor()
     if request.method=="POST":
         breakfast = request.form.getlist("breakfast")
         lunch = request.form.getlist("lunch")
@@ -86,12 +88,26 @@ def book():
         ordered = []
         if breakfast:
             ordered.append('breakfast')
+            val = 'UPDATE mess_data SET breakfast = breakfast+1'
+            cur.execute(val)
+            conn.commit() 
         if lunch:
             ordered.append('lunch')
+            val = 'UPDATE mess_data SET lunch = lunch+1'
+            cur.execute(val)
+            conn.commit()
         if snacks:
             ordered.append('snacks')
+            val = 'UPDATE mess_data SET snacks = snacks+1'
+            cur.execute(val)
+            conn.commit()
         if dinner:
             ordered.append('dinner')
+            val = 'UPDATE mess_data SET dinner = dinner+1'
+            cur.execute(val)
+            conn.commit()
+        cur.close()
+        conn.close()
         return ordered
 
 if __name__ == "__main__":
