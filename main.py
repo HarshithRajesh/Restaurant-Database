@@ -1,4 +1,4 @@
-from flask import Flask,render_template, request,url_for,flash
+from flask import Flask,render_template, request,url_for,flash,redirect
 import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
@@ -30,8 +30,12 @@ def login():
    if request.method=="POST":
        username = request.form.get('user')
        password = request.form.get('pass')
-       conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
-       cur = conn.cursor()
+    #    conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
+    #    cur = conn.cursor()
+
+       if (username=='mess') and (password=='mess@123'):
+           return redirect(url_for('mess_data'))
+           
 
     
 
@@ -46,6 +50,8 @@ def register():
         password = request.form.get("pass")
         repass = request.form.get("repass")
         email = request.form.get("email")
+
+        
         
 
         if (password==repass):
@@ -75,6 +81,10 @@ def register():
 @app.route("/home",methods=["GET"])
 def home_page():
     return render_template("index.html")
+
+@app.route("/mess_login",methods=["GET","POST"])
+def mess_data():
+    return{'message':"Mess Login"}
 
 @app.route("/book",methods=["POST"])
 def book():
