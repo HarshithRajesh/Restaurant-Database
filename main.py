@@ -82,9 +82,28 @@ def register():
 def home_page():
     return render_template("index.html")
 
-@app.route("/mess_login",methods=["GET","POST"])
+@app.route("/mess_login",methods=["GET"])
+# Get count of mess data
 def mess_data():
-    return{'message':"Mess Login"}
+    conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
+    cur = conn.cursor()
+    breakfast = 'SELECT breakfast FROM mess_data'
+    cur.execute(breakfast)
+    breakfast = cur.fetchall()[0][0]
+    lunch = 'SELECT lunch FROM mess_data'
+    cur.execute(lunch)
+    lunch = cur.fetchall()[0][0]
+    snacks = 'SELECT snacks FROM mess_data'
+    cur.execute(snacks)
+    snacks = cur.fetchall()[0][0]    
+    dinner = 'SELECT dinner FROM mess_data'
+    cur.execute(dinner)
+    dinner = cur.fetchall()[0][0]
+    cur.close
+    conn.close()
+    
+    return{'message':"Mess Login",'breakfast':breakfast,'dinner':dinner,'snacks':snacks,'lunch':lunch}
+
 
 @app.route("/book",methods=["POST"])
 def book():
