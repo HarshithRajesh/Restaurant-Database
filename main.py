@@ -31,7 +31,7 @@ def login():
        username = request.form.get('user')
        password = request.form.get('pass')
     #    conn = psycopg2.connect(dbname='Restaurent', user='postgres' ,password='babe123')
-    #    cur = conn.cursor()
+    #    cur = conn.cursor() simple commit
 
        if (username=='mess') and (password=='mess@123'):
            return redirect(url_for('mess_data'))
